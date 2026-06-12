@@ -113,6 +113,8 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(SolutionDir)src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,6 +142,24 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\repository\SampleRepository.cpp" />
+    <ClCompile Include="src\repository\OrderRepository.cpp" />
+    <ClCompile Include="src\repository\ProductionRepository.cpp" />
+    <ClCompile Include="src\service\SampleService.cpp" />
+    <ClCompile Include="src\service\OrderService.cpp" />
+    <ClCompile Include="src\service\ProductionService.cpp" />
+    <ClCompile Include="src\service\ReleaseService.cpp" />
+    <ClCompile Include="src\view\ConsoleView.cpp" />
+    <ClCompile Include="src\view\TableFormatter.cpp" />
+    <ClCompile Include="src\controller\SampleController.cpp" />
+    <ClCompile Include="src\controller\OrderController.cpp" />
+    <ClCompile Include="src\controller\MonitorController.cpp" />
+    <ClCompile Include="src\controller\ProductionController.cpp" />
+    <ClCompile Include="src\controller\ReleaseController.cpp" />
+    <ClCompile Include="src\controller\MainController.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>

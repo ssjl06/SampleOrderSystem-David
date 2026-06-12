@@ -13,6 +13,7 @@ public:
     void approveOrder(const std::string& orderId);
     void rejectOrder(const std::string& orderId);
     std::vector<Order> getReservedOrders() const;
+    std::vector<Order> getAllOrders() const;
 private:
     SampleRepository&    sampleRepo_;
     OrderRepository&     orderRepo_;

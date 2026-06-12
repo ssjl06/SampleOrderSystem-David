@@ -70,3 +70,7 @@ void OrderService::rejectOrder(const std::string& orderId) {
 std::vector<Order> OrderService::getReservedOrders() const {
     return orderRepo_.findByStatus(OrderStatus::RESERVED);
 }
+
+std::vector<Order> OrderService::getAllOrders() const {
+    return orderRepo_.findAll();
+}
