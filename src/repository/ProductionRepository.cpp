@@ -51,7 +51,7 @@ std::optional<ProductionJob> ProductionRepository::front() const {
     // enqueuedAt 문자열 기준 최솟값 = 가장 먼저 등록된 Job
     return *std::min_element(items.begin(), items.end(),
         [](const ProductionJob& a, const ProductionJob& b) {
-            return a.enqueuedAt < b.enqueuedAt;
+            return a.enqueuedAt < b.enqueuedAt;  // epoch 숫자 비교 → 먼저 등록된 Job
         });
 }
 

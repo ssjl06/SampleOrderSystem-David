@@ -6,7 +6,7 @@
 struct Sample {
     std::string sampleId;
     std::string name;
-    double      avgProductionTime;
+    double      avgProductionTime;  // 평균 생산시간 (초/ea)
     double      yield;
     int         stock;
 

@@ -84,23 +84,27 @@ std::vector<Order> getReservedOrders() const;
 ProductionService(SampleRepository&, OrderRepository&, ProductionRepository&);
 std::optional<ProductionJob> getCurrentJob() const;
 std::vector<ProductionJob> getQueue() const;
-void completeCurrentJob();
+void checkAndAutoComplete();  // now - enqueuedAt >= totalTime(초) 인 Job 자동 완료
 ```
 
-**완료 처리 흐름:**
+**자동 완료 흐름:**
 ```
-실생산량 재고 추가 → 주문량 차감 → 주문 PRODUCING→CONFIRMED → Job 제거
+checkAndAutoComplete() 호출 시:
+  front() Job의 (now - enqueuedAt) >= totalTime 이면:
+    실생산량 재고 추가 → 주문량 차감 → 주문 PRODUCING→CONFIRMED → Job 제거
+    (연속 완료 가능: 다음 Job도 조건 충족이면 반복)
 ```
 
 **테스트 케이스:**
 | 테스트명 | 검증 내용 |
 |---------|----------|
 | `FrontReturnsFirstEnqueuedJob` | 먼저 등록된 Job이 getCurrentJob()으로 반환되는지 (FIFO) |
-| `CompleteJobChangesOrderToConfirmed` | completeCurrentJob() 후 해당 주문 상태가 CONFIRMED인지 |
-| `CompleteJobAddsProducedStockMinusOrderQty` | 실생산량 추가 후 주문량 차감 → 재고 잔여분이 맞는지 (예: 실생산 121 - 주문 100 = 재고 21) |
-| `CompleteJobRemovesJobFromQueue` | 완료 후 해당 Job이 큐에서 제거되는지 |
 | `GetQueueReturnsFifoOrder` | 여러 Job 등록 시 enqueuedAt 순으로 반환되는지 |
-| `CompleteWhenEmptyThrows` | 큐가 비어있을 때 completeCurrentJob() → runtime_error |
+| `AutoCompleteWhenTimeElapsed` | enqueuedAt=과거, totalTime=1초 → checkAndAutoComplete() 후 CONFIRMED 전환되는지 |
+| `AutoCompleteAddsStockMinusOrderQty` | 자동 완료 후 재고 = 실생산량 - 주문량 잔여분인지 (예: 실생산 121 - 주문 100 = 재고 21) |
+| `AutoCompleteRemovesJobFromQueue` | 자동 완료 후 해당 Job이 큐에서 제거되는지 |
+| `NoAutoCompleteWhenTimeNotElapsed` | enqueuedAt=현재, totalTime=9999초 → checkAndAutoComplete() 후 여전히 PRODUCING인지 |
+| `GetQueueReturnsEmptyWhenNoJobs` | 큐가 비어있을 때 getQueue() 빈 벡터 반환 |
 
 ---
 
