@@ -1,0 +1,26 @@
+# Build output
+x64/
+Debug/
+Release/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.aps
+*.ncb
+*.sdf
+*.opensdf
+ipch/
+*.filters
+
+# vcpkg
+vcpkg/
+vcpkg_installed/
+packages/
+packages.config
+
+# Misc
+LastCoverageResults.log
+SemiOrde.A1B2C3D4/
+SemiOrderSystem/
