@@ -30,6 +30,12 @@ TEST_F(ReleaseServiceTest, ReleaseNonConfirmedOrderThrows) {
     }
 }
 
+TEST_F(ReleaseServiceTest, ReleaseNonExistentOrderThrows) {
+    OrderRepository repo(path);
+    ReleaseService svc(repo);
+    EXPECT_THROW(svc.releaseOrder("ORD-NOTEXIST"), std::invalid_argument);
+}
+
 TEST_F(ReleaseServiceTest, GetConfirmedOrdersReturnsOnlyConfirmed) {
     OrderRepository repo(path);
     repo.save(makeOrder("ORD-001", OrderStatus::RESERVED));

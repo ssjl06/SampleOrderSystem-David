@@ -94,6 +94,12 @@ TEST_F(ProductionServiceTest, NoAutoCompleteWhenTimeNotElapsed) {
     EXPECT_EQ(oRepo.findById("ORD-001")->status, OrderStatus::PRODUCING);
 }
 
+TEST_F(ProductionServiceTest, GetCurrentJobReturnsNulloptWhenEmpty) {
+    SampleRepository sRepo(sPath); OrderRepository oRepo(oPath); ProductionRepository jRepo(jPath);
+    ProductionService svc(sRepo, oRepo, jRepo);
+    EXPECT_FALSE(svc.getCurrentJob().has_value());
+}
+
 TEST_F(ProductionServiceTest, MultipleJobsAutoCompleteInFifoOrder) {
     SampleRepository sRepo(sPath); OrderRepository oRepo(oPath); ProductionRepository jRepo(jPath);
     long long past1 = (long long)time(nullptr) - 20;

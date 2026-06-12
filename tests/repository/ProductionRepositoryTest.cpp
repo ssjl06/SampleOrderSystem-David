@@ -29,6 +29,21 @@ TEST_F(ProductionRepositoryTest, RemoveAdvancesFront) {
     EXPECT_EQ(repo.front()->orderId, "ORD-002");
 }
 
+TEST_F(ProductionRepositoryTest, FrontReturnsNulloptWhenEmpty) {
+    ProductionRepository repo(path);
+    EXPECT_FALSE(repo.front().has_value());
+}
+
+TEST_F(ProductionRepositoryTest, GetQueueReturnsSortedByEnqueuedAt) {
+    ProductionRepository repo(path);
+    repo.save(makeJob("ORD-002", 2000));
+    repo.save(makeJob("ORD-001", 1000));
+    auto queue = repo.getQueue();
+    ASSERT_EQ(queue.size(), 2u);
+    EXPECT_EQ(queue[0].orderId, "ORD-001");
+    EXPECT_EQ(queue[1].orderId, "ORD-002");
+}
+
 TEST_F(ProductionRepositoryTest, JsonRoundTripProductionJob) {
     ProductionRepository repo(path);
     repo.save(makeJob("ORD-001", 1000));

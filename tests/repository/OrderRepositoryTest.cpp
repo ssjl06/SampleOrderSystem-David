@@ -33,3 +33,34 @@ TEST_F(OrderRepositoryTest, UpdateChangesStatus) {
     EXPECT_TRUE(repo.findByStatus(OrderStatus::CONFIRMED).size() == 1u);
     EXPECT_TRUE(repo.findByStatus(OrderStatus::RESERVED).empty());
 }
+
+TEST_F(OrderRepositoryTest, FindByIdReturnsCorrectOrder) {
+    OrderRepository repo(path);
+    repo.save(makeOrder("ORD-001", OrderStatus::RESERVED));
+    auto result = repo.findById("ORD-001");
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result->orderId, "ORD-001");
+}
+
+TEST_F(OrderRepositoryTest, FindByIdMissingReturnsNullopt) {
+    OrderRepository repo(path);
+    EXPECT_FALSE(repo.findById("ORD-999").has_value());
+}
+
+TEST_F(OrderRepositoryTest, RemoveDeletesOrder) {
+    OrderRepository repo(path);
+    repo.save(makeOrder("ORD-001", OrderStatus::RESERVED));
+    repo.remove("ORD-001");
+    EXPECT_FALSE(repo.findById("ORD-001").has_value());
+    EXPECT_TRUE(repo.findAll().empty());
+}
+
+TEST_F(OrderRepositoryTest, PersistsAcrossReload) {
+    {
+        OrderRepository repo(path);
+        repo.save(makeOrder("ORD-001", OrderStatus::RESERVED));
+    }
+    OrderRepository repo2(path);
+    EXPECT_TRUE(repo2.findById("ORD-001").has_value());
+    EXPECT_EQ(repo2.findById("ORD-001")->status, OrderStatus::RESERVED);
+}

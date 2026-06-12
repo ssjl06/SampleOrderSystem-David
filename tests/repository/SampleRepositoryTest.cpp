@@ -41,6 +41,14 @@ TEST_F(SampleRepositoryTest, RemoveDeletesItem) {
     EXPECT_TRUE(repo.findAll().empty());
 }
 
+TEST_F(SampleRepositoryTest, FindAllReturnsAllSamples) {
+    SampleRepository repo(path);
+    repo.save(makeSample("S-001"));
+    repo.save(makeSample("S-002"));
+    repo.save(makeSample("S-003"));
+    EXPECT_EQ(repo.findAll().size(), 3u);
+}
+
 TEST_F(SampleRepositoryTest, PersistsAcrossReload) {
     {
         SampleRepository repo(path);

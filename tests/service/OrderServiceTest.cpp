@@ -113,3 +113,47 @@ TEST_F(OrderServiceTest, RejectNonReservedOrderThrows) {
     svc.approveOrder(id);
     EXPECT_THROW(svc.rejectOrder(id), std::invalid_argument);
 }
+
+TEST_F(OrderServiceTest, ApproveWithExactStockConfirms) {
+    // stock == quantity → CONFIRMED (경계값)
+    SampleRepository sRepo(sPath); OrderRepository oRepo(oPath); ProductionRepository jRepo(jPath);
+    sRepo.save(makeSample("S-001", 100));
+    OrderService svc(sRepo, oRepo, jRepo);
+    std::string id = svc.placeOrder("S-001", "삼성전자", 100);
+    svc.approveOrder(id);
+    EXPECT_EQ(oRepo.findById(id)->status, OrderStatus::CONFIRMED);
+    EXPECT_EQ(sRepo.findById("S-001")->stock, 0);
+}
+
+TEST_F(OrderServiceTest, ApproveNonExistentOrderThrows) {
+    SampleRepository sRepo(sPath); OrderRepository oRepo(oPath); ProductionRepository jRepo(jPath);
+    OrderService svc(sRepo, oRepo, jRepo);
+    EXPECT_THROW(svc.approveOrder("ORD-NOTEXIST"), std::invalid_argument);
+}
+
+TEST_F(OrderServiceTest, RejectNonExistentOrderThrows) {
+    SampleRepository sRepo(sPath); OrderRepository oRepo(oPath); ProductionRepository jRepo(jPath);
+    OrderService svc(sRepo, oRepo, jRepo);
+    EXPECT_THROW(svc.rejectOrder("ORD-NOTEXIST"), std::invalid_argument);
+}
+
+TEST_F(OrderServiceTest, GetReservedOrdersReturnsOnlyReserved) {
+    SampleRepository sRepo(sPath); OrderRepository oRepo(oPath); ProductionRepository jRepo(jPath);
+    sRepo.save(makeSample("S-001", 500));
+    OrderService svc(sRepo, oRepo, jRepo);
+    std::string id1 = svc.placeOrder("S-001", "삼성전자", 10);
+    std::string id2 = svc.placeOrder("S-001", "SK하이닉스", 10);
+    svc.approveOrder(id1);  // → CONFIRMED
+    auto reserved = svc.getReservedOrders();
+    ASSERT_EQ(reserved.size(), 1u);
+    EXPECT_EQ(reserved[0].orderId, id2);
+}
+
+TEST_F(OrderServiceTest, GetAllOrdersReturnsAll) {
+    SampleRepository sRepo(sPath); OrderRepository oRepo(oPath); ProductionRepository jRepo(jPath);
+    sRepo.save(makeSample("S-001", 500));
+    OrderService svc(sRepo, oRepo, jRepo);
+    svc.placeOrder("S-001", "삼성전자", 10);
+    svc.placeOrder("S-001", "SK하이닉스", 10);
+    EXPECT_EQ(svc.getAllOrders().size(), 2u);
+}
