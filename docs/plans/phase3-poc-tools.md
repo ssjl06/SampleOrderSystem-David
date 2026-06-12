@@ -24,25 +24,15 @@
 **Files:**
 - Create: `src\main.cpp`
 
-**생성 데이터:**
+**생성 데이터 (buildScenario 기준):**
 
 | 파일 | 내용 |
 |------|------|
-| samples.json | 시료 12종 (S-001~S-012, 다양한 yield/stock) |
+| samples.json | 시료 12종 (S-001~S-012, 랜덤 yield/avgProdTime/stock) |
 | orders.json | 주문 36건 (RESERVED 3, CONFIRMED 3, PRODUCING 3, RELEASE 26, REJECTED 1) |
 | production_jobs.json | 생산작업 3건 (PRODUCING 주문 대응) |
 
-**phase5 테스트 기준값을 위한 S-003 고정 수치:**
-
-| 필드 | 값 | 비고 |
-|-----|---|-----|
-| sampleId | S-003 | |
-| yield | 0.92 | |
-| avgProductionTime | 0.8 | min/ea |
-| stock | 30 | |
-| 연결 주문 (RESERVED) | ORD-20260612-003, 삼성전자, 200ea | 승인 시 부족분=170 → actualProd=206, totalTime=164.8 |
-
-> 이 값은 `ApproveCreatesCorrectProductionJob` 테스트의 기대값과 반드시 일치해야 합니다.
+> 모든 값은 랜덤 생성. Phase 5 서비스 테스트는 DummyDataGenerator 데이터에 의존하지 않고 테스트 내부 픽스처를 사용합니다.
 
 **Steps:**
 - [ ] 빌드 → 출력경로 `C:\reviewer\SemiOrderSystem\data` 입력 → 3개 JSON 파일 생성 확인

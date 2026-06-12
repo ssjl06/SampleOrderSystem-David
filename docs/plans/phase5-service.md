@@ -66,7 +66,7 @@ std::vector<Order> getReservedOrders() const;
 | `ApproveWithSufficientStockConfirms` | 재고 충분 시 상태가 CONFIRMED으로 변경되는지 |
 | `ApproveWithSufficientStockReducesStock` | 승인 후 시료 재고가 주문량만큼 감소하는지 |
 | `ApproveWithInsufficientStockProduces` | 재고 부족 시 상태가 PRODUCING으로 변경되는지 |
-| `ApproveCreatesCorrectProductionJob` | 재고 부족 시 shortage=170, actualProd=206(S-003 기준), totalTime=164.8 인지 |
+| `ApproveCreatesCorrectProductionJob` | 재고 부족 시 shortage/actualProd/totalTime 계산이 공식과 일치하는지 (테스트 픽스처: yield=0.92, avgProdTime=0.8, stock=30, quantity=200 → shortage=170, actualProd=206, totalTime=164.8) |
 | `RejectOrderSetsRejectedStatus` | 거절 후 상태가 REJECTED인지 |
 | `ApproveNonReservedOrderThrows` | 이미 CONFIRMED된 주문 재승인 시 invalid_argument |
 | `RejectNonReservedOrderThrows` | CONFIRMED 주문 거절 시도 시 invalid_argument |
