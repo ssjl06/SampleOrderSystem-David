@@ -79,6 +79,12 @@
     <ClCompile Include="tests\model\OrderStatusTest.cpp" />
     <ClCompile Include="tests\model\SampleTest.cpp" />
     <ClCompile Include="tests\model\OrderTest.cpp" />
+    <ClCompile Include="tests\repository\SampleRepositoryTest.cpp" />
+    <ClCompile Include="src\repository\SampleRepository.cpp" />
+    <ClCompile Include="tests\repository\OrderRepositoryTest.cpp" />
+    <ClCompile Include="src\repository\OrderRepository.cpp" />
+    <ClCompile Include="tests\repository\ProductionRepositoryTest.cpp" />
+    <ClCompile Include="src\repository\ProductionRepository.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
