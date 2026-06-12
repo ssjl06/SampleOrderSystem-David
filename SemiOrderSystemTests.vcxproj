@@ -85,6 +85,14 @@
     <ClCompile Include="src\repository\OrderRepository.cpp" />
     <ClCompile Include="tests\repository\ProductionRepositoryTest.cpp" />
     <ClCompile Include="src\repository\ProductionRepository.cpp" />
+    <ClCompile Include="tests\service\SampleServiceTest.cpp" />
+    <ClCompile Include="src\service\SampleService.cpp" />
+    <ClCompile Include="tests\service\OrderServiceTest.cpp" />
+    <ClCompile Include="src\service\OrderService.cpp" />
+    <ClCompile Include="tests\service\ProductionServiceTest.cpp" />
+    <ClCompile Include="src\service\ProductionService.cpp" />
+    <ClCompile Include="tests\service\ReleaseServiceTest.cpp" />
+    <ClCompile Include="src\service\ReleaseService.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

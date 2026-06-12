@@ -105,6 +105,7 @@ checkAndAutoComplete() 호출 시:
 | `AutoCompleteRemovesJobFromQueue` | 자동 완료 후 해당 Job이 큐에서 제거되는지 |
 | `NoAutoCompleteWhenTimeNotElapsed` | enqueuedAt=현재, totalTime=9999초 → checkAndAutoComplete() 후 여전히 PRODUCING인지 |
 | `GetQueueReturnsEmptyWhenNoJobs` | 큐가 비어있을 때 getQueue() 빈 벡터 반환 |
+| `MultipleJobsAutoCompleteInFifoOrder` | 조건 충족된 Job 2개 있을 때 enqueuedAt 순으로 모두 완료되는지 |
 
 ---
 
