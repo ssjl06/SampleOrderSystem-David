@@ -1,0 +1,67 @@
+# Scenario 04: Error handling verification
+# Prerequisites: -ResetData recommended
+# Expected results:
+#   - [오류] Unknown sampleId: GHOST-001
+#   - [오류] quantity must be > 0
+#   - "승인 대기 주문 없음" (no reserved orders after approval)
+#   - Monitoring: CONFIRMED 1건, stock 50 (200 - 50 = 150)
+
+# ── Error 1: Order for unknown sample ───────────────────
+# Expected: "[오류] Unknown sampleId: GHOST-001"
+2
+GHOST-001
+테스트고객
+10
+
+# (Enter)
+
+# ── Register sample for subsequent tests ────────────────
+1
+1
+S-E001
+오류테스트시료
+5.0
+0.90
+200
+0
+
+# (Enter)
+
+# ── Error 2: Zero quantity order ─────────────────────────
+# Expected: "[오류] quantity must be > 0"
+2
+S-E001
+테스트고객
+0
+
+# (Enter)
+
+# ── Normal order (stock 200 >= qty 50 -> CONFIRMED) ──────
+2
+S-E001
+정상고객
+50
+
+# (Enter)
+
+# ── Approve ORD-{TODAY}-001 (RESERVED -> CONFIRMED) ──────
+3
+ORD-{TODAY}-001
+1
+
+# (Enter)
+
+# ── Try to approve again: NO RESERVED orders ─────────────
+# runApprove() prints "승인 대기 주문 없음" and returns immediately
+# -- NO order ID or choice input here --
+3
+
+# (Enter)
+
+# ── Final state check ────────────────────────────────────
+# Expected: CONFIRMED 1건, stock 150
+4
+
+# (Enter)
+
+0
