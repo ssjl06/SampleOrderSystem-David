@@ -6,7 +6,7 @@
 ## 핵심 문서
 - **요구사항**: `PRD.md`
 - **설계**: `docs/design.md`
-- **구현 계획**: `docs/plan.md` (작성 예정)
+- **구현 계획**: `docs/plan.md`
 
 ## 기술 스택
 - 언어: C++ (C++17)
@@ -30,9 +30,17 @@ View → Controller → Service → Repository → JSON
 ## 주요 도메인 규칙
 - 등록된 시료만 주문 가능
 - 승인 시 재고 자동 확인 → CONFIRMED 또는 PRODUCING 분기
-- 생산라인 스케줄링: FIFO
+- 생산라인 스케줄링: FIFO (`enqueuedAt` Unix epoch 기준)
 - 실생산량: `ceil(부족분 / (수율 × 0.9))`
+- 생산시간 단위: **초(sec)** — `avgProductionTime`(sec/ea), `totalTime`(sec)
+- `enqueuedAt`: Unix epoch 초(long long) — 프로세스 재시작 후에도 경과시간 계산 가능
+- 자동완료: 매 메인루프마다 `checkAndAutoComplete()` 호출 → `now - enqueuedAt >= totalTime` 이면 PRODUCING → CONFIRMED 자동 전환
 - REJECTED 주문은 모니터링에서 제외
+
+## 구현 현황 (Phase 7 완료)
+- 테스트: **65개** 전체 통과 (Model 12 / Repository 14 / Service 35 / Smoke 2 + 기타 2)
+- 커버리지: **95.9%** (src/ 기준, OpenCppCoverage) — 목표 90% 초과 달성
+- 커버리지 리포트: `coverage_report_src/index.html`
 
 ## 디렉토리 구조
 ```

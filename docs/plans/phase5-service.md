@@ -46,6 +46,7 @@ std::string placeOrder(const std::string& sampleId,
 void approveOrder(const std::string& orderId);
 void rejectOrder(const std::string& orderId);
 std::vector<Order> getReservedOrders() const;
+std::vector<Order> getAllOrders() const;  // MonitorController 용도로 추가
 ```
 
 **승인 로직:**
@@ -70,6 +71,11 @@ std::vector<Order> getReservedOrders() const;
 | `RejectOrderSetsRejectedStatus` | 거절 후 상태가 REJECTED인지 |
 | `ApproveNonReservedOrderThrows` | 이미 CONFIRMED된 주문 재승인 시 invalid_argument |
 | `RejectNonReservedOrderThrows` | CONFIRMED 주문 거절 시도 시 invalid_argument |
+| `ApproveWithExactStockConfirms` | stock == quantity 경계값 → CONFIRMED + 재고 0 (Phase 7 추가) |
+| `ApproveNonExistentOrderThrows` | 존재하지 않는 orderId 승인 시도 → invalid_argument (Phase 7 추가) |
+| `RejectNonExistentOrderThrows` | 존재하지 않는 orderId 거절 시도 → invalid_argument (Phase 7 추가) |
+| `GetReservedOrdersReturnsOnlyReserved` | 혼재 상태 주문 중 RESERVED만 반환 (Phase 7 추가) |
+| `GetAllOrdersReturnsAll` | 전체 주문 수 일치 확인 (Phase 7 추가) |
 
 ---
 
