@@ -1,0 +1,8 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="SemiOrderSystem.vcxproj" Id="cf3f6b1f-79fb-4835-9355-cf3a6e7d5830" />
+  <Project Path="SemiOrderSystemTests.vcxproj" Id="a1b2c3d4-e5f6-7890-abcd-ef1234567890" />
+</Solution>
